@@ -1,3 +1,3 @@
 [workspace]
-members = ["day1","day1-noregex"]
+members = ["day1","day1-noregex","day2-part1","day2-part2"]
 resolver="2"
