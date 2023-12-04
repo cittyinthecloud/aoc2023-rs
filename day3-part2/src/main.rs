@@ -19,7 +19,7 @@ fn do_aoc(input: &str) -> usize {
         
     let mut numbers = Vec::new(); 
     let mut gears = Vec::new();
-    let mut numbers_cutoffs = [(0,0);141];
+    let mut numbers_cutoffs = Vec::new();
 
     let mut last_cutoff = 0;
     for (y, row) in input.lines().enumerate() {
@@ -55,11 +55,11 @@ fn do_aoc(input: &str) -> usize {
             numbers.push(Number { start: start_of_number, end: end_of_number, number: number});
         }
 
-        numbers_cutoffs[y] = (last_cutoff,numbers.len());
+        numbers_cutoffs.push((last_cutoff,numbers.len()));
         last_cutoff = numbers.len();
     }
 
-    numbers_cutoffs[140]=(numbers.len(),numbers.len());
+    numbers_cutoffs.push((numbers.len(),numbers.len()));
 
     'gearloop:for (gear_x, gear_y) in gears {
         let mut product = 1;
