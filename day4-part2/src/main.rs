@@ -26,7 +26,7 @@ impl NumberBitSet {
 }
 
 fn main() {
-    let input = fs::read_to_string("input.example").unwrap();
+    let input = fs::read_to_string("input").unwrap();
 
     println!("{}",do_aoc(&input));
 }
