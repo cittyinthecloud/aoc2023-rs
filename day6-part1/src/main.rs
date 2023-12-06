@@ -2,7 +2,7 @@
 extern crate test;
 
 use memchr::memchr;
-use std::{fs, hint::black_box, time::Instant};
+use std::fs;
 
 
 fn main() {
@@ -144,7 +144,7 @@ fn do_aoc(input: &str) -> u32 {
     }
 
     // println!("{:?}", cases);
-    return solution;6
+    return solution;
 }
 
 #[inline(always)]

@@ -2,7 +2,7 @@
 extern crate test;
 
 use memchr::memchr;
-use std::{fs, os::fd, ops::DivAssign};
+use std::fs;
 
 
 fn main() {
