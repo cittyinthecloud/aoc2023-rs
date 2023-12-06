@@ -66,7 +66,7 @@ fn do_aoc(input: &str) -> u64 {
     let root_1 = (ftime + sqrt) / 2f64;
     let root_2 = (ftime - sqrt) / 2f64;
 
-    integers_between_f64(root_1, root_2)
+    integers_between_f64(root_2, root_1)
 }
 
 #[inline(always)]
@@ -79,26 +79,7 @@ fn u8_to_u64_digit(b: u8) -> u64 {
     return (b - b'0') as u64;
 }
 fn integers_between_f64(a: f64, b: f64) -> u64 {
-    let x: f64;
-    let y: f64;
-    if a <= b {
-        x = a;
-        y = b;
-    } else {
-        x = b;
-        y = a;
-    }
-
-    let trunc_x = x.trunc();
-    let trunc_y = y.trunc();
-
-    // println!("{x} {y} {trunc_x} {trunc_y}");
-
-    if trunc_x == trunc_y {
-        0
-    } else {
-        (trunc_y - trunc_x) as u64 - (trunc_y == y) as u64
-    }
+    (b.ceil() - a.floor()) as u64 - 1
 }
 
 #[bench]

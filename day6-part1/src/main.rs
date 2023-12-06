@@ -137,7 +137,8 @@ fn do_aoc(input: &str) -> u32 {
             let root_1 = (ftime + sqrt) / 2f32;
             let root_2 = (ftime - sqrt) / 2f32;
 
-            solution *= integers_between_f32(root_1, root_2);
+
+            solution *= integers_between_f32(root_2, root_1);
         } else {
             break;
         }
@@ -166,26 +167,7 @@ fn u8_to_u32_digit(b: u8) -> u32 {
     return (b - b'0') as u32;
 }
 fn integers_between_f32(a: f32, b: f32) -> u32 {
-    let x: f32;
-    let y: f32;
-    if a <= b {
-        x = a;
-        y = b;
-    } else {
-        x = b;
-        y = a;
-    }
-
-    let trunc_x = x.trunc();
-    let trunc_y = y.trunc();
-
-    // println!("{x} {y} {trunc_x} {trunc_y}");
-
-    if trunc_x == trunc_y {
-        0
-    } else {
-        (trunc_y - trunc_x) as u32 - (trunc_y == y) as u32
-    }
+    (b.ceil() - a.floor()) as u32 - 1
 }
 
 #[bench]
