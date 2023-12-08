@@ -4,7 +4,6 @@ extern crate test;
 use memchr::memchr;
 use std::fs;
 
-
 fn main() {
     let input = fs::read_to_string("input").unwrap();
     let answer = do_aoc(&input);
@@ -17,7 +16,7 @@ fn main() {
     //     let end = Instant::now();
 
     //     times.push((end-start).as_nanos())
-    //     // println!("{answer}");    
+    //     // println!("{answer}");
     // }
     // println!("{}",times.iter().sum::<u128>()/times.len() as u128)
 }
@@ -137,7 +136,6 @@ fn do_aoc(input: &str) -> u32 {
             let root_1 = (ftime + sqrt) / 2f32;
             let root_2 = (ftime - sqrt) / 2f32;
 
-
             solution *= integers_between_f32(root_2, root_1);
         } else {
             break;
@@ -173,6 +171,6 @@ fn integers_between_f32(a: f32, b: f32) -> u32 {
 #[bench]
 fn bench_day6(b: &mut test::Bencher) {
     let file = fs::read_to_string("input").unwrap();
-    
+
     b.iter(|| test::black_box(do_aoc(&file)));
 }

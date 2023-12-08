@@ -4,7 +4,6 @@ extern crate test;
 use memchr::memchr;
 use std::fs;
 
-
 fn main() {
     let input = fs::read_to_string("input").unwrap();
     let answer = do_aoc(&input);
@@ -62,7 +61,7 @@ fn do_aoc(input: &str) -> u64 {
 
     let ftime = time as f64;
     let fdist = dist as f64;
-    let sqrt = ((ftime*ftime) - (4f64 * fdist)).sqrt();
+    let sqrt = ((ftime * ftime) - (4f64 * fdist)).sqrt();
     let root_1 = (ftime + sqrt) / 2f64;
     let root_2 = (ftime - sqrt) / 2f64;
 
@@ -85,6 +84,6 @@ fn integers_between_f64(a: f64, b: f64) -> u64 {
 #[bench]
 fn bench_day6(b: &mut test::Bencher) {
     let file = fs::read_to_string("input").unwrap();
-    
+
     b.iter(|| test::black_box(do_aoc(&file)));
 }

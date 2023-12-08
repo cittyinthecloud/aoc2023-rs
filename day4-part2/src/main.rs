@@ -8,10 +8,10 @@ impl NumberBitSet {
     fn new() -> Self {
         Self([0, 0])
     }
-    
+
     #[inline(always)]
     fn contains(&mut self, i: u8) -> bool {
-        self.0[((i as usize & 64) != 0) as usize] & (1 << (i & 63)) != 0 
+        self.0[((i as usize & 64) != 0) as usize] & (1 << (i & 63)) != 0
     }
 
     #[inline(always)]
@@ -28,7 +28,7 @@ impl NumberBitSet {
 fn main() {
     let input = fs::read_to_string("input").unwrap();
 
-    println!("{}",do_aoc(&input));
+    println!("{}", do_aoc(&input));
 }
 
 fn do_aoc(input: &str) -> u32 {
@@ -48,8 +48,8 @@ fn do_aoc(input: &str) -> u32 {
             past_colon = true;
         } else if b == b'\n' {
             if bit_set.contains(num) {
-                cards[line_num+finds+1] += cards[line_num];
-            }        
+                cards[line_num + finds + 1] += cards[line_num];
+            }
             bit_set.clear();
             num = 0;
             finds = 0;
@@ -72,20 +72,20 @@ fn do_aoc(input: &str) -> u32 {
             } else if b == b' ' {
                 if bit_set.contains(num) {
                     finds += 1;
-                    cards[line_num+finds] += cards[line_num];
+                    cards[line_num + finds] += cards[line_num];
                 }
                 num = 0;
             } else if b >= b'0' && b <= b'9' {
                 num = num * 10 + (b - b'0');
             }
-        } 
+        }
     }
 
     // LLVM please
 
     const LANES: usize = 8;
     let chunks = cards.chunks_exact(16);
-    
+
     let partial_sums = chunks.fold([0u32; LANES], |mut acc, chunk| {
         for i in 0..LANES {
             acc[i] += chunk[i];
@@ -99,6 +99,6 @@ fn do_aoc(input: &str) -> u32 {
 #[bench]
 fn bench_day4(b: &mut test::Bencher) {
     let file = fs::read_to_string("input").unwrap();
-    
+
     b.iter(|| do_aoc(&file));
 }

@@ -5,7 +5,7 @@ use std::fs;
 
 fn main() {
     let input = fs::read_to_string("input").unwrap();
-    
+
     println!("{}", do_aoc(&input));
 }
 
@@ -18,16 +18,17 @@ const BLUE_IN_BAG: u8 = 14;
 fn do_aoc(input: &str) -> usize {
     let mut sum = 0;
 
-    'mainloop:for (i,line) in input.lines().enumerate() {
-        let line = &line[line.find(':').unwrap()+1..line.len()];
+    'mainloop: for (i, line) in input.lines().enumerate() {
+        let line = &line[line.find(':').unwrap() + 1..line.len()];
         // println!("{}",line);
 
         // for score in line.split([',',';']) {
-        for score in line.split([',',';']) {
+        for score in line.split([',', ';']) {
             let (count_str, color) = score[1..score.len()].split_once(' ').unwrap();
-                        
+
             // This is faster than the loop, and faster than parse::<u8>.
-            let count = count_str.bytes()
+            let count = count_str
+                .bytes()
                 .map(|x| x - b'0')
                 .fold(0, |acc, d| (acc * 10) + d);
 
@@ -41,8 +42,8 @@ fn do_aoc(input: &str) -> usize {
                 continue 'mainloop;
             }
         }
-        
-        sum+=i+1;
+
+        sum += i + 1;
     }
 
     sum
@@ -51,6 +52,6 @@ fn do_aoc(input: &str) -> usize {
 #[bench]
 fn bench_day2(b: &mut test::Bencher) {
     let file = fs::read_to_string("input").unwrap();
-    
+
     b.iter(|| do_aoc(&file));
 }

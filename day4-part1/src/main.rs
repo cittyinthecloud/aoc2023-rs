@@ -1,7 +1,7 @@
 #![feature(test)]
 extern crate test;
-use std::fs;
 use memchr::memchr;
+use std::fs;
 struct NumberBitSet([u64; 2]);
 
 impl NumberBitSet {
@@ -9,10 +9,10 @@ impl NumberBitSet {
     fn new() -> Self {
         Self([0, 0])
     }
-    
+
     #[inline(always)]
     fn contains(&mut self, i: u8) -> bool {
-        self.0[((i as usize & 64) != 0) as usize] & (1 << (i & 63)) != 0 
+        self.0[((i as usize & 64) != 0) as usize] & (1 << (i & 63)) != 0
     }
 
     #[inline(always)]
@@ -29,10 +29,8 @@ impl NumberBitSet {
 fn main() {
     let input = fs::read_to_string("input").unwrap();
 
-    println!("{}",do_aoc(&input));
+    println!("{}", do_aoc(&input));
 }
-
-
 
 fn do_aoc(input: &str) -> i32 {
     let mut sum = 0;
@@ -44,7 +42,7 @@ fn do_aoc(input: &str) -> i32 {
         //println!("{line}");
 
         let memchr = memchr(b':', line.as_bytes()).unwrap();
-        for b in line[memchr+1..line.len()].bytes() {
+        for b in line[memchr + 1..line.len()].bytes() {
             if !parsing_our_card {
                 if b == b'|' {
                     //println!("end of winning numbers");
@@ -61,7 +59,7 @@ fn do_aoc(input: &str) -> i32 {
                 }
             } else if b == b' ' {
                 if bit_set.contains(num) {
-                    res = 1.max(res*2)
+                    res = 1.max(res * 2)
                 }
                 num = 0;
             } else if b >= b'0' && b <= b'9' {
@@ -70,10 +68,10 @@ fn do_aoc(input: &str) -> i32 {
         }
 
         if bit_set.contains(num) {
-            res = 1.max(res*2)
-        }        
+            res = 1.max(res * 2)
+        }
         //println!("{res}");
-        sum+=res;
+        sum += res;
         bit_set.clear();
     }
     sum
@@ -82,6 +80,6 @@ fn do_aoc(input: &str) -> i32 {
 #[bench]
 fn bench_day4(b: &mut test::Bencher) {
     let file = fs::read_to_string("input").unwrap();
-    
+
     b.iter(|| do_aoc(&file));
 }

@@ -10,7 +10,7 @@ fn main() {
 }
 
 const NUMBERS: [&[u8]; 9] = [
-    b"one",b"two",b"three",b"four",b"five",b"six",b"seven",b"eight",b"nine"
+    b"one", b"two", b"three", b"four", b"five", b"six", b"seven", b"eight", b"nine",
 ];
 
 fn do_aoc(lines: Lines) {
@@ -20,7 +20,7 @@ fn do_aoc(lines: Lines) {
         let mut val = 0;
         let bytes_line = line.as_bytes();
 
-        'fwd_loop:for i in 0..bytes_line.len() {
+        'fwd_loop: for i in 0..bytes_line.len() {
             let c = bytes_line[i];
             if c > b'0' && b':' > c {
                 val = ((c - b'0') as i32) * 10;
@@ -28,7 +28,7 @@ fn do_aoc(lines: Lines) {
             }
 
             for (d, name) in NUMBERS.iter().enumerate() {
-                if let Some(slice) = bytes_line.get(i..i+name.len()) {
+                if let Some(slice) = bytes_line.get(i..i + name.len()) {
                     if *name == slice {
                         val = 10 * (d as i32 + 1);
                         break 'fwd_loop;
@@ -37,7 +37,7 @@ fn do_aoc(lines: Lines) {
             }
         }
 
-        'rev_loop:for i in (0..bytes_line.len()).rev() {
+        'rev_loop: for i in (0..bytes_line.len()).rev() {
             let c = bytes_line[i];
             if c > b'0' && b':' > c {
                 val += (c - b'0') as i32;
@@ -45,10 +45,10 @@ fn do_aoc(lines: Lines) {
             }
 
             for (d, name) in NUMBERS.iter().enumerate() {
-                if i+1 < name.len() {
+                if i + 1 < name.len() {
                     continue;
                 }
-                if let Some(slice) = bytes_line.get(i+1-name.len()..=i) {
+                if let Some(slice) = bytes_line.get(i + 1 - name.len()..=i) {
                     if *name == slice {
                         val += d as i32 + 1;
                         break 'rev_loop;
@@ -60,13 +60,13 @@ fn do_aoc(lines: Lines) {
         sum += val
     }
 
-    println!("{}",sum)
+    println!("{}", sum)
 }
 
 #[bench]
 fn bench_day1(b: &mut test::Bencher) {
     let file = fs::read_to_string("input").unwrap();
     let lines = file.lines();
-    
+
     b.iter(|| do_aoc(lines.clone()));
 }
