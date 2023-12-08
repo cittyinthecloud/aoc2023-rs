@@ -48,38 +48,33 @@ struct Hand {
 
 impl Hand {
     fn new(hand_str: &str, bet: u16) -> Self {
-        let mut cards = [Default::default(); 5];
+        let mut cards: [Card; 5] = [Default::default(); 5];
         let mut counts: [i32; 14] = [0; 14];
         let mut max_count = 0;
+
         let mut pair_count = 0;
-
-        let mut found_three_of_a_kind = false;
-
-        let mut found_hand_type = None;
 
         for (i, rank_char) in hand_str.char_indices() {
             let card: Card = Card::from_char(&rank_char);
             cards[i] = card;
-            counts[card.card_rank] += 1;
-            if counts[card.card_rank] > max_count {
-                max_count = counts[card.card_rank];
+            let new_count = counts[card.card_rank] + 1;
+            counts[card.card_rank] = new_count;
+            if new_count > max_count {
+                max_count = new_count;
             }
 
-            if counts[card.card_rank] == 5 {
-                found_hand_type = Some(HandType::FiveOfAKind);
-            } else if counts[card.card_rank] == 4 {
-                found_hand_type = Some(HandType::FourOfAKind);
-            } else if counts[card.card_rank] == 3 {
-                pair_count -= 1;
-                found_three_of_a_kind = true;
-            } else if counts[card.card_rank] == 2 {
-                pair_count += 1;
+            if new_count == 3 {
+                pair_count -= 1
+            } else if new_count == 2 {
+                pair_count += 1
             }
         }
 
-        let hand_type = if let Some(found_hand_type) = found_hand_type {
-            found_hand_type
-        } else if found_three_of_a_kind {
+        let hand_type = if max_count == 5 {
+            HandType::FiveOfAKind
+        } else if max_count == 4 {
+            HandType::FourOfAKind
+        } else if max_count == 3 {
             if pair_count == 1 {
                 HandType::FullHouse
             } else {
@@ -93,6 +88,7 @@ impl Hand {
             HandType::HighCard
         };
 
+        // println!("handtype {hand_type:?}");
         Self {
             cards,
             hand_type,
