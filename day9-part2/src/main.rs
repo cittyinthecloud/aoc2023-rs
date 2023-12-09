@@ -18,20 +18,14 @@ fn do_aoc(input: &str) -> i32 {
         let mut iter_len = nums.len()-1;
 
         loop {
-            let mut finished = true;
-            let mut first_num: Option<i32> = None;
+            let mut finished: bool = true;
 
             for i in 0..iter_len {
 
                 let diff = nums[i+1] - nums[i];
-                if finished {
-                    if let Some(first_num) = first_num {
-                        if diff != first_num {
-                            finished = false;
-                        }
-                    } else {
-                        first_num = Some(diff);
-                    }
+                
+                if diff != 0 {
+                    finished = false;
                 }
 
                 nums[i] = diff;
@@ -43,14 +37,13 @@ fn do_aoc(input: &str) -> i32 {
         }
 
         // Why is the type annotation needed here lol.
-        let ans: i32 = nums.iter().skip(iter_len).sum();
+        let ans: i32 = nums.iter().sum();
         // println!("{nums:?} {iter_len} {ans}");
 
         sum += ans;
 
         nums.clear();
     }
-    // todo!()
     sum
 }
 

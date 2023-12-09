@@ -4,7 +4,7 @@ extern crate test;
 use std::fs;
 
 fn main() {
-    let input = fs::read_to_string("input.example").unwrap();
+    let input = fs::read_to_string("input").unwrap();
     let answer = do_aoc(&input);
     println!("{answer}");
 }
@@ -19,19 +19,12 @@ fn do_aoc(input: &str) -> i32 {
 
         loop {
             let mut finished = true;
-            let mut first_num: Option<i32> = None;
 
             for i in 0..iter_len {
 
                 let diff = nums[i+1] - nums[i];
-                if finished {
-                    if let Some(first_num) = first_num {
-                        if diff != first_num {
-                            finished = false;
-                        }
-                    } else {
-                        first_num = Some(diff);
-                    }
+                if diff != 0 {
+                    finished = false;
                 }
 
                 nums[i] = diff;
@@ -42,7 +35,7 @@ fn do_aoc(input: &str) -> i32 {
             if finished { break; }
         }
 
-        let ans: i32 = nums.iter().skip(iter_len).sum();
+        let ans: i32 = nums.iter().sum();
         // println!("{nums:?} {iter_len} {ans}")
 
         // Why is the type annotation needed here lol.
