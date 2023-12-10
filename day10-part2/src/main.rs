@@ -98,7 +98,7 @@ enum Case {
     NonBlockingChar,
 }
 fn main() {
-    let input = fs::read_to_string("input.example3").unwrap();
+    let input = fs::read_to_string("input").unwrap();
     let answer = do_aoc(&input);
     println!("{answer}");
 }
@@ -155,11 +155,13 @@ fn do_aoc(input: &str) -> u32 {
 
     if s_should_count {
         has_char[[start_x,start_y]] = Case::BlockingChar;
+    } else {
+        has_char[[start_x,start_y]] = Case::NonBlockingChar;
     }
 
     loop {
         let cur = maze[animal.y][animal.x];
-        has_char[[animal.x, animal.y]] = if cur == b'|' || cur == b'J' || cur == b'L'  {
+        has_char[[animal.x, animal.y]] = if cur == b'|' || cur == b'J' || cur == b'L' {
             Case::BlockingChar
         } else {
             Case::NonBlockingChar
