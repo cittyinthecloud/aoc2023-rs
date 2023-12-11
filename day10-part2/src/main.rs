@@ -105,15 +105,11 @@ fn main() {
 
 fn do_aoc(input: &str) -> u32 {
     let maze: Vec<&[u8]> = input.lines().map(|line| line.as_bytes()).collect();
-    let start = maze
-        .iter()
-        .enumerate()
-        .map(|(y, line)| (y, line, memchr(b'S', line)))
-        .find(|(_, _, x)| x.is_some())
-        .unwrap();
+    let row_length: usize = maze[0].len() + 1;
+    let start_byte = memchr(b'S', input.as_bytes()).unwrap();
 
-    let start_y = start.0;
-    let start_x = start.2.unwrap();
+    let start_y = start_byte / (row_length + 1);
+    let start_x = start_byte % row_length;
 
     let start_dir: Direction;
     let mut found_first = false;
