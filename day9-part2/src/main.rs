@@ -13,17 +13,19 @@ fn do_aoc(input: &str) -> i32 {
     let mut sum = 0;
     let mut nums: Vec<i32> = Vec::new();
     for line in input.lines() {
-        line.split(' ').map(|str_num| str_num.parse::<i32>().unwrap()).rev().collect_into(&mut nums);
+        line.split(' ')
+            .map(|str_num| str_num.parse::<i32>().unwrap())
+            .rev()
+            .collect_into(&mut nums);
 
-        let mut iter_len = nums.len()-1;
+        let mut iter_len = nums.len() - 1;
 
         loop {
             let mut finished: bool = true;
 
             for i in 0..iter_len {
+                let diff = nums[i + 1] - nums[i];
 
-                let diff = nums[i+1] - nums[i];
-                
                 if diff != 0 {
                     finished = false;
                 }
@@ -33,7 +35,9 @@ fn do_aoc(input: &str) -> i32 {
 
             iter_len -= 1;
 
-            if finished { break; }
+            if finished {
+                break;
+            }
         }
 
         // Why is the type annotation needed here lol.

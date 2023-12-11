@@ -1,6 +1,6 @@
 #![feature(test)]
-use std::fs;
 use memchr::memchr;
+use std::fs;
 extern crate test;
 
 #[derive(Debug)]
@@ -14,7 +14,7 @@ struct Animal {
 impl Animal {
     fn do_move(&mut self, maze: &[&[u8]]) {
         let cur_pipe = maze[self.y][self.x];
-        
+
         match cur_pipe {
             b'|' => {
                 if self.dir == Direction::North {
@@ -22,14 +22,14 @@ impl Animal {
                 } else {
                     self.y += 1;
                 }
-            },
+            }
             b'-' => {
                 if self.dir == Direction::West {
                     self.x -= 1;
                 } else {
                     self.x += 1;
                 }
-            },
+            }
             b'L' => {
                 if self.dir == Direction::West {
                     self.y -= 1;
@@ -38,7 +38,7 @@ impl Animal {
                     self.x += 1;
                     self.dir = Direction::East;
                 }
-            },
+            }
             b'J' => {
                 if self.dir == Direction::East {
                     self.y -= 1;
@@ -47,7 +47,7 @@ impl Animal {
                     self.x -= 1;
                     self.dir = Direction::West;
                 }
-            },
+            }
             b'7' => {
                 if self.dir == Direction::East {
                     self.y += 1;
@@ -56,7 +56,7 @@ impl Animal {
                     self.x -= 1;
                     self.dir = Direction::West
                 }
-            },
+            }
             b'F' => {
                 if self.dir == Direction::West {
                     self.y += 1;
@@ -66,7 +66,7 @@ impl Animal {
                     self.dir = Direction::East;
                 }
             }
-            _ => panic!("Nonsensical pipe {}", cur_pipe)
+            _ => panic!("Nonsensical pipe {}", cur_pipe),
         }
     }
 }
@@ -83,10 +83,10 @@ impl Direction {
     #[inline(always)]
     fn bump(&self, coords: (usize, usize)) -> (usize, usize) {
         match self {
-            Direction::North => (coords.0, coords.1-1),
-            Direction::South => (coords.0, coords.1+1),
-            Direction::West => (coords.0-1, coords.1),
-            Direction::East => (coords.0+1, coords.1),
+            Direction::North => (coords.0, coords.1 - 1),
+            Direction::South => (coords.0, coords.1 + 1),
+            Direction::West => (coords.0 - 1, coords.1),
+            Direction::East => (coords.0 + 1, coords.1),
         }
     }
 }
@@ -99,22 +99,25 @@ fn main() {
 
 fn do_aoc(input: &str) -> u32 {
     let maze: Vec<&[u8]> = input.lines().map(|line| line.as_bytes()).collect();
-    let start = maze.iter().enumerate().map(|(y, line)| {
-        (y, line, memchr(b'S', line))
-    }).find(|(_, _, x)| x.is_some()).unwrap();
+    let start = maze
+        .iter()
+        .enumerate()
+        .map(|(y, line)| (y, line, memchr(b'S', line)))
+        .find(|(_, _, x)| x.is_some())
+        .unwrap();
 
     let start_y = start.0;
     let start_x = start.2.unwrap();
-    
+
     let mut start_dir_1 = None;
     let start_dir_2: Direction;
 
     'direction_search: {
-        if start_x != 0 && open_to_east(maze[start_y][start_x-1]) {
+        if start_x != 0 && open_to_east(maze[start_y][start_x - 1]) {
             start_dir_1 = Some(Direction::West)
-        } 
-        
-        if open_to_west(maze[start_y][start_x+1]) {
+        }
+
+        if open_to_west(maze[start_y][start_x + 1]) {
             if let Some(_) = start_dir_1 {
                 start_dir_2 = Direction::East;
                 break 'direction_search;
@@ -123,7 +126,7 @@ fn do_aoc(input: &str) -> u32 {
             }
         }
 
-        if open_to_north(maze[start_y+1][start_x]) {
+        if open_to_north(maze[start_y + 1][start_x]) {
             if let Some(_) = start_dir_1 {
                 start_dir_2 = Direction::South;
                 break 'direction_search;
@@ -132,7 +135,7 @@ fn do_aoc(input: &str) -> u32 {
             }
         }
 
-        if start_y != 0 && open_to_south(maze[start_y-1][start_x]) {
+        if start_y != 0 && open_to_south(maze[start_y - 1][start_x]) {
             start_dir_2 = Direction::North;
             break 'direction_search;
         }
@@ -142,11 +145,19 @@ fn do_aoc(input: &str) -> u32 {
 
     let start_dir_1 = start_dir_1.unwrap();
 
-    let start_pos_1 = start_dir_1.bump((start_x, start_y));   
-    let start_pos_2 = start_dir_2.bump((start_x, start_y));   
+    let start_pos_1 = start_dir_1.bump((start_x, start_y));
+    let start_pos_2 = start_dir_2.bump((start_x, start_y));
 
-    let mut animal_1 = Animal {x: start_pos_1.0, y: start_pos_1.1, dir: start_dir_1};
-    let mut animal_2 = Animal {x: start_pos_2.0, y: start_pos_2.1, dir: start_dir_2};
+    let mut animal_1 = Animal {
+        x: start_pos_1.0,
+        y: start_pos_1.1,
+        dir: start_dir_1,
+    };
+    let mut animal_2 = Animal {
+        x: start_pos_2.0,
+        y: start_pos_2.1,
+        dir: start_dir_2,
+    };
 
     let mut steps = 1;
 
@@ -164,19 +175,19 @@ fn do_aoc(input: &str) -> u32 {
 }
 
 fn open_to_east(c: u8) -> bool {
-    return c==b'-' || c == b'L' || c == b'F'
+    return c == b'-' || c == b'L' || c == b'F';
 }
 
 fn open_to_west(c: u8) -> bool {
-    return c==b'-' || c == b'J' || c == b'7'
+    return c == b'-' || c == b'J' || c == b'7';
 }
 
-fn open_to_north(c:u8) -> bool {
-    return c==b'|' || c == b'J' || c == b'L'
+fn open_to_north(c: u8) -> bool {
+    return c == b'|' || c == b'J' || c == b'L';
 }
 
-fn open_to_south(c:u8) -> bool {
-    return c==b'|' || c == b'7' || c == b'F'
+fn open_to_south(c: u8) -> bool {
+    return c == b'|' || c == b'7' || c == b'F';
 }
 
 #[bench]
